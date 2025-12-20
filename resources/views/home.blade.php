@@ -1,37 +1,3 @@
-{{-- @extends('layouts.app')
-
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    {{ __('You are logged in!') }}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection --}}
-
-{{-- ================================================
-FILE: resources/views/home.blade.php
-FUNGSI: Halaman utama website
-================================================ --}}
-
-{{-- =====================================================
-FILE: resources/views/home.blade.php
-FUNGSI: Halaman utama website
-===================================================== --}}
-
 @extends('layouts.app')
 
 @section('title', 'Beranda')
@@ -44,23 +10,21 @@ FUNGSI: Halaman utama website
         <div class="row align-items-center">
             <div class="col-lg-6">
                 <h1 class="display-4 fw-bold mb-3">
-                    <i class="bi bi-shop me-2"></i>
+                    <i class="bi bi-bag-check-fill me-2"></i>
                     Belanja Online Mudah & Terpercaya
                 </h1>
                 <p class="lead mb-4">
-                    Temukan berbagai produk berkualitas dengan harga terbaik.
-                    Gratis ongkir untuk pembelian pertama!
+                    Temukan berbagai produk pilihan dengan kualitas terbaik dan harga bersahabat.
                 </p>
                 <a href="{{ route('catalog.index') }}" class="btn btn-light btn-lg">
-                    <i class="bi bi-cart3 me-2"></i>
+                    <i class="bi bi-cart-fill me-2"></i>
                     Mulai Belanja
                 </a>
             </div>
+
             <div class="col-lg-6 d-none d-lg-block text-center">
-                <img src="{{ asset('images/hero-shopping.svg') }}"
-                     alt="Shopping"
-                     class="img-fluid"
-                     style="max-height: 400px;">
+                <img src="https://placehold.co/500x350?text=Online+Shopping" class="img-fluid rounded"
+                    alt="Belanja Online">
             </div>
         </div>
     </div>
@@ -70,35 +34,30 @@ FUNGSI: Halaman utama website
 <section class="py-5">
     <div class="container">
         <h2 class="text-center mb-4">
-            <i class="bi bi-grid-fill me-2"></i>
+            <i class="bi bi-grid-fill me-2 text-primary"></i>
             Kategori Populer
         </h2>
 
         <div class="row g-4">
             @foreach($categories as $category)
-                <div class="col-6 col-md-4 col-lg-2">
-                    <a href="{{ route('catalog.index', ['category' => $category->slug]) }}"
-                       class="text-decoration-none">
-                        <div class="card border-0 shadow-sm text-center h-100">
-                            <div class="card-body">
-                                <img src="{{ $category->image_url }}"
-                                     alt="{{ $category->name }}"
-                                     class="rounded-circle mb-3"
-                                     width="80"
-                                     height="80"
-                                     style="object-fit: cover;">
-
-                                <h6 class="card-title mb-1">
-                                    {{ $category->name }}
-                                </h6>
-                                <small class="text-muted">
-                                    <i class="bi bi-box-seam me-1"></i>
-                                    {{ $category->products_count }} produk
-                                </small>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="{{ route('catalog.index', ['category' => $category->slug]) }}"
+                    class="text-decoration-none text-dark">
+                    <div class="card border-0 shadow-sm text-center h-100">
+                        <div class="card-body">
+                            <div class="mb-3 text-primary fs-2">
+                                <i class="bi bi-box-seam"></i>
                             </div>
+                            <h6 class="card-title mb-1">
+                                {{ $category->name }}
+                            </h6>
+                            <small class="text-muted">
+                                {{ $category->products_count }} produk
+                            </small>
                         </div>
-                    </a>
-                </div>
+                    </div>
+                </a>
+            </div>
             @endforeach
         </div>
     </div>
@@ -120,9 +79,9 @@ FUNGSI: Halaman utama website
 
         <div class="row g-4">
             @foreach($featuredProducts as $product)
-                <div class="col-6 col-md-4 col-lg-3">
-                    @include('profile.partials.product-card', ['product' => $product])
-                </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                @include('profile.partials.product-card', ['product' => $product])
+            </div>
             @endforeach
         </div>
     </div>
@@ -132,16 +91,17 @@ FUNGSI: Halaman utama website
 <section class="py-5">
     <div class="container">
         <div class="row g-4">
+
             <div class="col-md-6">
                 <div class="card bg-warning text-dark border-0 h-100">
                     <div class="card-body d-flex flex-column justify-content-center">
                         <h3>
-                            <i class="bi bi-lightning-fill me-2"></i>
-                            Flash Sale!
+                            <i class="bi bi-lightning-charge-fill me-2"></i>
+                            Flash Sale
                         </h3>
-                        <p>Diskon hingga 50% untuk produk pilihan</p>
+                        <p>Diskon besar untuk produk pilihan hari ini</p>
                         <a href="#" class="btn btn-dark w-fit">
-                            <i class="bi bi-tags me-1"></i>
+                            <i class="bi bi-tags-fill me-1"></i>
                             Lihat Promo
                         </a>
                     </div>
@@ -163,6 +123,7 @@ FUNGSI: Halaman utama website
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
@@ -171,15 +132,15 @@ FUNGSI: Halaman utama website
 <section class="py-5">
     <div class="container">
         <h2 class="text-center mb-4">
-            <i class="bi bi-clock-history me-2"></i>
+            <i class="bi bi-clock-history me-2 text-primary"></i>
             Produk Terbaru
         </h2>
 
         <div class="row g-4">
             @foreach($latestProducts as $product)
-                <div class="col-6 col-md-4 col-lg-3">
-                    @include('profile.partials.product-card', ['product' => $product])
-                </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                @include('profile.partials.product-card', ['product' => $product])
+            </div>
             @endforeach
         </div>
     </div>

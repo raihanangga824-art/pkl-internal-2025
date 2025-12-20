@@ -2,14 +2,14 @@
 
 // use Illuminate\Support\Facades\Route;
 // use Illuminate\Support\Facades\Auth;
-// use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\GoogleController;
 // use App\Http\Controllers\Auth\AdminController;
 // use App\Http\Controllers\Auth\AdminProductController;
 // use App\Http\Controllers\ProfileController;
 // use Illuminate\Http\Request;
 // use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\HomeController;    
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
