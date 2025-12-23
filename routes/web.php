@@ -34,6 +34,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 });
 
+    Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
+Route::get('/product/{slug}', [CatalogController::class, 'show'])->name('catalog.show');
+
+    Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Kategori
+    Route::resource('categories', CategoryController::class)->except(['show']); // Kategori biasanya tidak butuh show detail page
+
+    // Produk
+    Route::resource('products', ProductController::class);
+
+    // Route tambahan untuk AJAX Image Handling (jika diperlukan)
+    // ...
+});
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -95,6 +108,8 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
+        Route::delete('/profile/google/unlink', [ProfileController::class, 'unlinkGoogle'])
+        ->name('profile.google.unlink');
 
     Route::delete('/profile/avatar', [ProfileController::class, 'deleteAvatar'])
         ->name('profile.avatar.destroy');

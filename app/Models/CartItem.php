@@ -6,5 +6,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class CartItem extends Model
 {
-    //
+    protected $fillable = [
+        'cart_id',
+        'product_id',
+        'quantity',
+    ];
+
+    protected $appends = ['subtotal'];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function cart()
+    {
+        return $this->belongsTo(Cart::class);
+    }
+
+    // 🔥 SUBTOTAL DINAMIS
+    public function getSubtotalAttribute()
+    {
+        return $this->product->price * $this->quantity;
+    }
 }

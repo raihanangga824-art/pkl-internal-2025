@@ -8,6 +8,8 @@
 <section class="bg-primary text-white py-5">
     <div class="container">
         <div class="row align-items-center">
+
+            {{-- TEXT --}}
             <div class="col-lg-6">
                 <h1 class="display-4 fw-bold mb-3">
                     <i class="bi bi-bag-check-fill me-2"></i>
@@ -22,12 +24,30 @@
                 </a>
             </div>
 
-            <div class="col-lg-6 d-none d-lg-block text-center">
-                <img src="https://placehold.co/500x350?text=Online+Shopping" class="img-fluid rounded"
-                    alt="Belanja Online">
-            </div>
-        </div>
-    </div>
+            {{-- SLIDER IMAGE --}}
+            {{-- AUTO SLIDE IMAGE --}}
+            <div class="col-lg-6 d-none d-lg-block">
+            
+                <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+            
+                    <div class="carousel-inner rounded shadow">
+            
+                        <div class="carousel-item active">
+                            <img src="{{ asset('images/boruto2.webp') }}" class="d-block w-100"
+                                style="height: 350px; object-fit: cover;">
+                        </div>
+            
+                        <div class="carousel-item">
+                            <img src="{{ asset('images/boruto.jpg') }}" class="d-block w-100"
+                                style="height: 350px; object-fit: cover;">
+                        </div>
+            
+                        <div class="carousel-item">
+                            <img src="{{ asset('images/boruto3.jpg') }}" class="d-block w-100"
+                                style="height: 350px; object-fit: cover;">
+                        </div>
+            
+                    </div>
 </section>
 
 {{-- ================= KATEGORI ================= --}}
@@ -48,9 +68,7 @@
                             <div class="mb-3 text-primary fs-2">
                                 <i class="bi bi-box-seam"></i>
                             </div>
-                            <h6 class="card-title mb-1">
-                                {{ $category->name }}
-                            </h6>
+                            <h6 class="card-title mb-1">{{ $category->name }}</h6>
                             <small class="text-muted">
                                 {{ $category->products_count }} produk
                             </small>
@@ -72,8 +90,7 @@
                 Produk Unggulan
             </h2>
             <a href="{{ route('catalog.index') }}" class="btn btn-outline-primary">
-                Lihat Semua
-                <i class="bi bi-arrow-right ms-1"></i>
+                Lihat Semua <i class="bi bi-arrow-right ms-1"></i>
             </a>
         </div>
 
@@ -83,47 +100,6 @@
                 @include('profile.partials.product-card', ['product' => $product])
             </div>
             @endforeach
-        </div>
-    </div>
-</section>
-
-{{-- ================= PROMO ================= --}}
-<section class="py-5">
-    <div class="container">
-        <div class="row g-4">
-
-            <div class="col-md-6">
-                <div class="card bg-warning text-dark border-0 h-100">
-                    <div class="card-body d-flex flex-column justify-content-center">
-                        <h3>
-                            <i class="bi bi-lightning-charge-fill me-2"></i>
-                            Flash Sale
-                        </h3>
-                        <p>Diskon besar untuk produk pilihan hari ini</p>
-                        <a href="#" class="btn btn-dark w-fit">
-                            <i class="bi bi-tags-fill me-1"></i>
-                            Lihat Promo
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="card bg-info text-white border-0 h-100">
-                    <div class="card-body d-flex flex-column justify-content-center">
-                        <h3>
-                            <i class="bi bi-person-plus-fill me-2"></i>
-                            Member Baru?
-                        </h3>
-                        <p>Dapatkan voucher Rp 50.000 untuk pembelian pertama</p>
-                        <a href="{{ route('register') }}" class="btn btn-light w-fit">
-                            <i class="bi bi-person-check-fill me-1"></i>
-                            Daftar Sekarang
-                        </a>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 </section>
