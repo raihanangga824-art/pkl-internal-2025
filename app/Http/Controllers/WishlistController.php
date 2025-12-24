@@ -14,10 +14,15 @@ class WishlistController extends Controller
     public function index()
     {
         // Ambil produk yang di-wishlist oleh user yang sedang login
-        $products = auth()->user()->wishlists()
-            ->with(['category', 'primaryImage']) // Eager load
-            ->latest('wishlists.created_at') // Urutkan dari yang baru di-wishlist
-            ->paginate(12);
+        // $products = auth()->user()->wishlists()
+        //     ->with(['category', 'primaryImage']) // Eager load
+        //     ->latest('wishlists.created_at') // Urutkan dari yang baru di-wishlist
+        //     ->paginate(12);
+        $products = auth()->user()
+        ->wishlists()
+        ->with(['category', 'primaryImage'])
+        ->orderByPivot('created_at', 'desc')
+        ->paginate(12);
 
         return view('wishlist.index', compact('products'));
     }

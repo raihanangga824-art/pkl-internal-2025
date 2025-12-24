@@ -142,27 +142,47 @@
         <form class="modal-content" action="{{ route('admin.categories.store') }}" method="POST"
             enctype="multipart/form-data">
             @csrf
+
             <div class="modal-header">
                 <h5 class="modal-title">Tambah Kategori Baru</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
+
             <div class="modal-body">
                 <div class="mb-3">
-                    <label class="form-label">Nama Kategori <span class="text-danger">*</span></label>
-                    <input type="text" name="name" class="form-control" required placeholder="Misal: Elektronik">
+                    <label class="form-label">
+                        Nama Kategori <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" name="name" class="form-control" required maxlength="100">
                 </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Deskripsi</label>
+                    <textarea name="description" class="form-control"
+                        placeholder="Deskripsi singkat kategori"></textarea>
+                </div>
+
                 <div class="mb-3">
                     <label class="form-label">Gambar Cover</label>
                     <input type="file" name="image" class="form-control">
                 </div>
+
+                {{-- FIX UTAMA --}}
+                <input type="hidden" name="is_active" value="0">
+
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" name="is_active" value="1" checked>
                     <label class="form-check-label">Langsung Aktifkan</label>
                 </div>
             </div>
+
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-primary">Simpan Kategori</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Batal
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    Simpan Kategori
+                </button>
             </div>
         </form>
     </div>

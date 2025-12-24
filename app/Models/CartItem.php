@@ -24,7 +24,6 @@ class CartItem extends Model
         return $this->belongsTo(Cart::class);
     }
 
-    // 🔥 SUBTOTAL DINAMIS
     public function getSubtotalAttribute()
     {
         return $this->product->price * $this->quantity;
