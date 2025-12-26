@@ -13,6 +13,7 @@ class Order extends Model
      * Kolom yang boleh diisi via mass assignment
      */
     protected $fillable = [
+        'name',
         'user_id',
         'order_number',
         'shipping_name',

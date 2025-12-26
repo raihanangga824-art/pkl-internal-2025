@@ -4,6 +4,8 @@
 // use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Services\MidtransService;
+use App\Http\Controllers\PaymentController;
 // use App\Http\Controllers\Auth\AdminController;
 // use App\Http\Controllers\Auth\AdminProductController;
 // use App\Http\Controllers\ProfileController;
@@ -226,4 +228,16 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 });
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('reports/sales', [\App\Http\Controllers\Admin\ReportController::class, 'sales'])->name('reports.sales');
+});
+// route untuk payment  
+Route::middleware('auth')->group(function () {
+    // ... routes lainnya
+
+    // Payment Routes
+    Route::get('/orders/{order}/pay', [PaymentController::class, 'show'])
+        ->name('orders.pay');
+    Route::get('/orders/{order}/success', [PaymentController::class, 'success'])
+        ->name('orders.success');
+    Route::get('/orders/{order}/pending', [PaymentController::class, 'pending'])
+        ->name('orders.pending');
 });
