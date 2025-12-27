@@ -7,51 +7,33 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    /** @use HasFactory<\Database\Factories\OrderFactory> */
     use HasFactory;
 
-    /**
-     * Kolom yang boleh diisi via mass assignment
-     */
     protected $fillable = [
-        'name',
         'user_id',
         'order_number',
-        'shipping_name',
-        'shipping_phone',
-        'shipping_address',
-        'total_amount',
         'status',
         'payment_status',
+        'shipping_name',
+        'shipping_address',
+        'shipping_phone',
+        'total_amount',
+        'shipping_cost',
+        'snap_token',
     ];
 
-    /**
-     * Default value saat create()
-     */
-    protected $attributes = [
-        'status' => 'pending',
-    ];
-
-    /**
-     * Relasi: Order dimiliki oleh satu User
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     * Relasi: Order memiliki banyak OrderItem
-     */
     public function items()
     {
         return $this->hasMany(OrderItem::class);
     }
 
-    /**
-     * Helper: Hitung total dari item (opsional)
-     */
-    public function getCalculatedTotalAttribute()
+    public function payment()
     {
-        return $this->items->sum('subtotal');
+        return $this->hasOne(Payment::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
