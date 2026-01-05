@@ -38,8 +38,8 @@ return new class extends Migration
     // PENTING: Snapshot data produk saat transaksi
     $table->string('product_name'); // Simpan nama kalau-kalau produk dihapus/diubah
     $table->integer('quantity');
-    $table->decimal('price', 12, 2); // Simpan harga SAAT transaksi, bukan relasi ke harga produk sekarang
-    $table->decimal('subtotal', 12, 2); // quantity * price
+    $table->decimal('price', 18, 2); // Simpan harga SAAT transaksi, bukan relasi ke harga produk sekarang
+    $table->decimal('subtotal', 18, 2); // quantity * price
 
     $table->timestamps();
 });

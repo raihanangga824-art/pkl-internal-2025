@@ -69,8 +69,8 @@ return new class extends Migration
     $table->string('shipping_phone');
 
     // Total & Biaya
-    $table->decimal('total_amount', 12, 2);
-    $table->decimal('shipping_cost', 12, 2)->default(0);
+    $table->decimal('total_amount', 18, 2);
+    $table->decimal('shipping_cost', 18, 2)->default(0);
 
     // Midtrans Snap Token
     $table->string('snap_token')->nullable();

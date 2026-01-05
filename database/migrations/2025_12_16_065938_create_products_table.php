@@ -30,9 +30,9 @@ return new class extends Migration
             // Float tidak presisi untuk uang (bisa terjadi rounding error).
             // Decimal(12, 2) artinya total 12 digit, dengan 2 digit di belakang koma.
             // Contoh valid: 9,999,999,999.99 (Hingga 9 Milyar)
-            $table->decimal('price', 12, 2);
+            $table->decimal('price', 18, 2);
 
-            $table->decimal('discount_price', 12, 2)->nullable();
+            $table->decimal('discount_price', 18, 2)->nullable();
 
             // STOK BARANG
             $table->integer('stock')->default(0);

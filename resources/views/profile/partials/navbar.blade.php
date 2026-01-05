@@ -8,7 +8,7 @@ FUNGSI: Navigation bar untuk customer
         {{-- Logo & Brand --}}
         <a class="navbar-brand text-primary" href="{{ route('home') }}">
             <i class="bi bi-bag-heart-fill me-2"></i>
-            TokoOnline
+            Toko Online Raihan
         </a>
 
         {{-- Mobile Toggle --}}

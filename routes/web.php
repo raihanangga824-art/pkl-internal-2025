@@ -131,3 +131,6 @@ Route::post(
     '/midtrans/notification',
     [MidtransNotificationController::class, 'handle']
 )->name('midtrans.notification');
+
+// Batasi 5 request per menit
+Route::post('/login', [LoginController::class, 'login'])->middleware('throttle:5,1');
