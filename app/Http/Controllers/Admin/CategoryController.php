@@ -16,17 +16,15 @@ class CategoryController extends Controller
      * Menampilkan daftar kategori dengan caching dan pagination.
      */
     public function index()
-    {
-        // Ambil data kategori dari cache untuk performa lebih baik
-        $categories = Cache::remember('global_categories', 3600, function () {
-            return Category::select('id', 'name', 'slug', 'is_active', 'image', 'created_at')
-                ->withCount('products') // Hitung jumlah produk di setiap kategori
-                ->latest() // Urut berdasarkan terbaru
-                ->paginate(10);
-        });
+{
+    $categories = Category::select('id', 'name', 'slug', 'is_active', 'image', 'created_at')
+        ->withCount('products')
+        ->latest()
+        ->paginate(10);
 
-        return view('admin.categories.index', compact('categories'));
-    }
+    return view('admin.categories.index', compact('categories'));
+}
+
 
     /**
      * Menyimpan kategori baru ke database.

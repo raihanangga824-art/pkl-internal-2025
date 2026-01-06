@@ -3,211 +3,243 @@
 @section('title', 'Dashboard')
 
 @section('content')
+
+{{-- ================= MODERN UI STYLE ================= --}}
+<style>
+    :root {
+        --card-radius: 18px;
+    }
+
+    .glass {
+        background: rgba(255, 255, 255, .75);
+        backdrop-filter: blur(12px);
+        border-radius: var(--card-radius);
+    }
+
+    .card-modern {
+        border: none;
+        border-radius: var(--card-radius);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, .05);
+        transition: all .3s ease;
+    }
+
+    .card-modern:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, .08);
+    }
+
+    .icon-box {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+    }
+
+    .section-title {
+        font-weight: 700;
+        letter-spacing: .4px;
+    }
+
+    .muted {
+        color: #6c757d;
+        font-size: .85rem;
+    }
+
+    .order-row {
+        transition: background .2s;
+    }
+
+    .order-row:hover {
+        background: #f8f9fa;
+    }
+</style>
+
+{{-- ================= STATISTICS ================= --}}
 <div class="row g-4 mb-4">
-    {{-- 1. Stats Cards Grid --}}
 
-    {{-- Revenue Card --}}
+    {{-- Revenue --}}
     <div class="col-sm-6 col-xl-3">
-        <div class="card border-0 shadow-sm border-start border-4 border-success h-100">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <p class="text-muted text-uppercase fw-semibold mb-1" style="font-size: 0.8rem">Total Pendapatan
-                        </p>
-                        <h4 class="fw-bold mb-0 text-success">
-                            Rp {{ number_format($stats['total_revenue'], 0, ',', '.') }}
-                        </h4>
-                    </div>
-                    <div class="bg-success bg-opacity-10 p-3 rounded">
-                        <i class="bi bi-wallet2 text-success fs-3"></i>
-                    </div>
+        <div class="card-modern glass p-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="muted text-uppercase">Pendapatan</div>
+                    <h4 class="fw-bold mt-2 text-success">
+                        Rp {{ number_format($stats['total_revenue'], 0, ',', '.') }}
+                    </h4>
+                </div>
+                <div class="icon-box bg-success bg-opacity-10 text-success">
+                    <i class="bi bi-wallet2"></i>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- Pending Action Card --}}
+    {{-- Pending --}}
     <div class="col-sm-6 col-xl-3">
-        <div class="card border-0 shadow-sm border-start border-4 border-warning h-100">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <p class="text-muted text-uppercase fw-semibold mb-1" style="font-size: 0.8rem">Perlu Diproses
-                        </p>
-                        <h4 class="fw-bold mb-0 text-warning">
-                            {{ $stats['pending_orders'] }}
-                        </h4>
-                    </div>
-                    <div class="bg-warning bg-opacity-10 p-3 rounded">
-                        <i class="bi bi-box-seam text-warning fs-3"></i>
-                    </div>
+        <div class="card-modern glass p-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="muted text-uppercase">Perlu Diproses</div>
+                    <h4 class="fw-bold mt-2 text-warning">
+                        {{ $stats['pending_orders'] }}
+                    </h4>
+                </div>
+                <div class="icon-box bg-warning bg-opacity-10 text-warning">
+                    <i class="bi bi-box-seam"></i>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- Low Stock Card --}}
+    {{-- Low Stock --}}
     <div class="col-sm-6 col-xl-3">
-        <div class="card border-0 shadow-sm border-start border-4 border-danger h-100">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <p class="text-muted text-uppercase fw-semibold mb-1" style="font-size: 0.8rem">Stok Menipis</p>
-                        <h4 class="fw-bold mb-0 text-danger">
-                            {{ $stats['low_stock'] }}
-                        </h4>
-                    </div>
-                    <div class="bg-danger bg-opacity-10 p-3 rounded">
-                        <i class="bi bi-exclamation-triangle text-danger fs-3"></i>
-                    </div>
+        <div class="card-modern glass p-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="muted text-uppercase">Stok Menipis</div>
+                    <h4 class="fw-bold mt-2 text-danger">
+                        {{ $stats['low_stock'] }}
+                    </h4>
+                </div>
+                <div class="icon-box bg-danger bg-opacity-10 text-danger">
+                    <i class="bi bi-exclamation-triangle"></i>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- Total Products --}}
+    {{-- Products --}}
     <div class="col-sm-6 col-xl-3">
-        <div class="card border-0 shadow-sm border-start border-4 border-primary h-100">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <p class="text-muted text-uppercase fw-semibold mb-1" style="font-size: 0.8rem">Total Produk</p>
-                        <h4 class="fw-bold mb-0 text-primary">
-                            {{ $stats['total_products'] }}
-                        </h4>
-                    </div>
-                    <div class="bg-primary bg-opacity-10 p-3 rounded">
-                        <i class="bi bi-tags text-primary fs-3"></i>
-                    </div>
+        <div class="card-modern glass p-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="muted text-uppercase">Total Produk</div>
+                    <h4 class="fw-bold mt-2 text-primary">
+                        {{ $stats['total_products'] }}
+                    </h4>
+                </div>
+                <div class="icon-box bg-primary bg-opacity-10 text-primary">
+                    <i class="bi bi-tags"></i>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 
+{{-- ================= MAIN CONTENT ================= --}}
 <div class="row g-4">
-    {{-- 2. Revenue Chart --}}
+
+    {{-- Chart --}}
     <div class="col-lg-8">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-header bg-white py-3">
-                <h5 class="card-title mb-0">Grafik Penjualan (7 Hari)</h5>
+        <div class="card-modern glass p-4 h-100">
+            <div class="d-flex justify-content-between mb-3">
+                <h5 class="section-title">📊 Revenue Overview</h5>
+                <span class="muted">7 Hari Terakhir</span>
             </div>
-            <div class="card-body">
-                <canvas id="revenueChart" height="100"></canvas>
+            <div style="height:320px">
+                <canvas id="revenueChart"></canvas>
             </div>
         </div>
     </div>
 
-    {{-- 3. Recent Orders --}}
+    {{-- Recent Orders --}}
     <div class="col-lg-4">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-header bg-white py-3">
-                <h5 class="card-title mb-0">Pesanan Terbaru</h5>
+        <div class="card-modern glass h-100">
+            <div class="p-4 border-bottom">
+                <h5 class="section-title">🧾 Pesanan Terbaru</h5>
             </div>
-            <div class="card-body p-0">
-                <div class="list-group list-group-flush">
-                    @foreach($recentOrders as $order)
-                    <div class="list-group-item d-flex justify-content-between align-items-center px-4 py-3">
+
+            <div class="list-group list-group-flush">
+                @foreach($recentOrders as $order)
+                <div class="list-group-item px-4 py-3 border-0 order-row">
+                    <div class="d-flex justify-content-between">
                         <div>
-                            <div class="fw-bold text-primary">#{{ $order->order_number }}</div>
-                            <small class="text-muted">{{ $order->user->name }}</small>
+                            <div class="fw-semibold text-primary">
+                                #{{ $order->order_number }}
+                            </div>
+                            <small class="muted">{{ $order->user->name }}</small>
                         </div>
                         <div class="text-end">
-                            <div class="fw-bold">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</div>
-                            <span
-                                class="badge rounded-pill
-                                        {{ $order->payment_status == 'paid' ? 'bg-success bg-opacity-10 text-success' : 'bg-secondary bg-opacity-10 text-secondary' }}">
+                            <div class="fw-semibold">
+                                Rp {{ number_format($order->total_amount, 0, ',', '.') }}
+                            </div>
+                            <span class="badge rounded-pill
+                                {{ $order->payment_status === 'paid'
+                                    ? 'bg-success bg-opacity-10 text-success'
+                                    : 'bg-secondary bg-opacity-10 text-secondary' }}">
                                 {{ ucfirst($order->status) }}
                             </span>
                         </div>
                     </div>
-                    @endforeach
                 </div>
+                @endforeach
             </div>
-            <div class="card-footer bg-white text-center py-3">
-                <a href="{{ route('admin.orders.index') }}" class="text-decoration-none fw-bold">
-                    Lihat Semua Pesanan &rarr;
+
+            <div class="text-center py-3 border-top">
+                <a href="{{ route('admin.orders.index') }}" class="fw-semibold text-decoration-none">
+                    Lihat Semua →
                 </a>
             </div>
         </div>
     </div>
+
 </div>
 
-{{-- 4. Top Selling Products --}}
-<div class="card border-0 shadow-sm mt-4">
-    <div class="card-header bg-white py-3">
-        <h5 class="card-title mb-0">Produk Terlaris</h5>
-    </div>
-    <div class="card-body">
-        <div class="row g-4">
-            @foreach($topProducts as $product)
-            <div class="col-6 col-md-2 text-center">
-                <div class="card h-100 border-0 hover-shadow transition">
-                    <img src="{{ $product->image_url }}" class="card-img-top rounded mb-2"
-                        style="max-height: 100px; object-fit: cover;">
-                    <h6 class="card-title text-truncate" style="font-size: 0.9rem">{{ $product->name }}</h6>
-                    <small class="text-muted">{{ $product->sold }} terjual</small>
-                </div>
+{{-- ================= TOP PRODUCTS ================= --}}
+<div class="card-modern glass p-4 mt-4">
+    <h5 class="section-title mb-4">🔥 Produk Terlaris</h5>
+
+    <div class="row g-4">
+        @foreach($topProducts as $product)
+        <div class="col-6 col-md-2">
+            <div class="card-modern p-3 text-center h-100">
+                <img src="{{ $product->image_url }}" style="height:90px;width:100%;object-fit:cover;border-radius:12px">
+                <h6 class="fw-semibold mt-2 text-truncate">
+                    {{ $product->name }}
+                </h6>
+                <small class="muted">{{ $product->sold }} terjual</small>
             </div>
-            @endforeach
         </div>
+        @endforeach
     </div>
 </div>
 
-{{-- Script Chart.js --}}
+{{-- ================= CHART JS ================= --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const ctx = document.getElementById('revenueChart').getContext('2d');
+    const ctx = document.getElementById('revenueChart');
 
-        // Data dari Controller (Blade to JS)
-        const labels = {!! json_encode($revenueChart->pluck('date')) !!};
-        const data = {!! json_encode($revenueChart->pluck('total')) !!};
-
-        new Chart(ctx, {
-            type: 'line', // Jenis grafik: Line chart
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Pendapatan (Rp)',
-                    data: data,
-                    borderColor: '#0d6efd', // Bootstrap Primary Color
-                    backgroundColor: 'rgba(13, 110, 253, 0.1)',
-                    borderWidth: 2,
-                    tension: 0.3, // Membuat garis sedikit melengkung (smooth)
-                    fill: true,
-                    pointRadius: 4,
-                    pointHoverRadius: 6
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false, // Penting agar Chart menyesuaikan container
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                // Format Tooltip jadi Rupiah
-                                return 'Rp ' + new Intl.NumberFormat('id-ID').format(context.raw);
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: { borderDash: [2, 4] },
-                        ticks: {
-                            callback: function(value) {
-                                return 'Rp ' + new Intl.NumberFormat('id-ID', { notation: "compact" }).format(value);
-                            }
-                        }
-                    },
-                    x: {
-                        grid: { display: false }
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {!! json_encode($revenueChart->pluck('date')) !!},
+            datasets: [{
+                data: {!! json_encode($revenueChart->pluck('total')) !!},
+                borderColor: '#0d6efd',
+                backgroundColor: 'rgba(13,110,253,.15)',
+                tension: .4,
+                fill: true,
+                pointRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: val => 'Rp ' + new Intl.NumberFormat('id-ID').format(val)
                     }
                 }
             }
-        });
+        }
+    });
 </script>
+
 @endsection

@@ -22,14 +22,15 @@ class ProductController extends Controller
      */
     public function index(Request $request): View
     {
-        $products = Product::query()
-            ->select('id', 'name', 'price', 'slug', 'category_id', 'created_at') // Select kolom penting saja
-            ->with(['category:id,name', 'primaryImage:id,product_id,image_path,is_primary']) // Eager Loading
-            ->when($request->search, fn($query, $search) => $query->where('name', 'like', "%{$search}%"))
-            ->when($request->category, fn($query, $categoryId) => $query->where('category_id', $categoryId))
-            ->latest()
-            ->paginate(15)
-            ->withQueryString();
+       $products = Product::query()
+    ->select('id', 'name', 'price', 'stock', 'slug', 'category_id', 'created_at')
+    ->with(['category:id,name', 'primaryImage:id,product_id,image_path,is_primary'])
+    ->when($request->search, fn($query, $search) => $query->where('name', 'like', "%{$search}%"))
+    ->when($request->category, fn($query, $categoryId) => $query->where('category_id', $categoryId))
+    ->latest()
+    ->paginate(15)
+    ->withQueryString();
+
 
         // Ambil kategori dari cache
         $categories = Cache::remember('global_categories', 3600, function () {
