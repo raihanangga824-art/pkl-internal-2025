@@ -135,6 +135,9 @@ Route::middleware(['auth', 'admin'])
         // Reports
         Route::get('/reports/sales', [ReportController::class, 'sales'])
             ->name('reports.sales');
+
+         Route::get('/reports/sales/export', [ReportController::class, 'exportSales'])
+            ->name('reports.sales.export');   
     });
 
 /*
@@ -149,3 +152,4 @@ Route::post(
 
 // Batasi 5 request per menit
 Route::post('/login', [LoginController::class, 'login'])->middleware('throttle:5,1');
+

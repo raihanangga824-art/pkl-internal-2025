@@ -179,7 +179,7 @@ class MidtransNotificationController extends Controller
                 'paid_at' => now(),
             ]);
         }
-
+        event(new OrderPaidEvent($order));
         // TODO: Kirim email konfirmasi pembayaran
         // event(new PaymentSuccessful($order));
     }

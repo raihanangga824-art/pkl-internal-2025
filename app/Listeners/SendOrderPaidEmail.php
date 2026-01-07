@@ -1,5 +1,7 @@
 <?php
 
+// app/Listeners/SendOrderPaidEmail.php
+
 namespace App\Listeners;
 
 use App\Events\OrderPaidEvent;
@@ -7,20 +9,10 @@ use App\Mail\OrderPaid;
 use Illuminate\Contracts\Queue\ShouldQueue; // <--- PENTING
 use Illuminate\Support\Facades\Mail;
 
-class SendOrderPaidEmail
+class SendOrderPaidEmail implements ShouldQueue // <--- PENTING
 {
-    /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Handle the event.
-     */
-     public $tries = 3;
+    // Retry jika gagal
+    public $tries = 3;
 
     public function handle(OrderPaidEvent $event): void
     {
@@ -29,5 +21,10 @@ class SendOrderPaidEmail
             ->send(new OrderPaid($event->order));
 
         // Opsional: Kirim notif ke Admin juga
+        Mail::to(env('ADMIN_EMAIL'))->send(new OrderPaid($event->order));
+
+        // TODO: Kirim email konfirmasi pembayaran
+        // event(new PaymentSuccessful($order));
+
     }
 }
