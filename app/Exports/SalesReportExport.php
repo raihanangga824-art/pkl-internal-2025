@@ -4,7 +4,7 @@ namespace App\Exports;
 
 use App\Models\Order;
 use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\Exportable;
+// use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
@@ -12,7 +12,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class SalesReportExport implements FromQuery, WithHeadings, WithMapping, WithStyles
 {
-    use Exportable;
+    // use Exportable;
 
     public function __construct(
         protected string $dateFrom,

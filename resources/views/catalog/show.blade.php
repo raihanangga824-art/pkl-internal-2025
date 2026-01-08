@@ -1,152 +1,170 @@
-{{-- ================================================
-FILE: resources/views/catalog/show.blade.php
-FUNGSI: Halaman detail produk
-================================================ --}}
-
 @extends('layouts.app')
 
 @section('title', $product->name)
 
 @section('content')
-<div class="container py-4">
-    {{-- Breadcrumb --}}
-    <nav aria-label="breadcrumb" class="mb-4">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('catalog.index') }}">Katalog</a></li>
-            <li class="breadcrumb-item">
-                <a href="{{ route('catalog.index', ['category' => $product->category->slug]) }}">
-                    {{ $product->category->name }}
-                </a>
-            </li>
-            <li class="breadcrumb-item active">{{ Str::limit($product->name, 30) }}</li>
-        </ol>
-    </nav>
+{{-- Wrapper Background Kopi --}}
+<div class="main-page-wrapper min-vh-100 py-5">
+    <div class="container pt-4">
+        {{-- Breadcrumb Modern - Coffee Style --}}
+        <nav aria-label="breadcrumb" class="mb-5" data-aos="fade-down">
+            <ol
+                class="breadcrumb glass-breadcrumb px-4 py-2 rounded-pill shadow-sm d-inline-flex border border-white border-opacity-10">
+                <li class="breadcrumb-item"><a href="{{ route('home') }}"
+                        class="text-decoration-none text-white-50">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('catalog.index') }}"
+                        class="text-decoration-none text-white-50">Katalog</a></li>
+                <li class="breadcrumb-item active fw-bold text-coffee-light" aria-current="page">{{
+                    Str::limit($product->name, 25) }}</li>
+            </ol>
+        </nav>
 
-    <div class="row">
-        {{-- Product Images --}}
-        <div class="col-lg-6 mb-4">
-            <div class="card border-0 shadow-sm">
-                {{-- Main Image --}}
-                <div class="position-relative">
-                    <img src="{{ $product->image_url }}" id="main-image" class="card-img-top" alt="{{ $product->name }}"
-                        style="height: 400px; object-fit: contain; background: #f8f9fa;">
+        <div class="row g-5">
+            {{-- Area Gambar --}}
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="sticky-top" style="top: 100px;">
+                    <div class="card border-0 glass-card rounded-5 overflow-hidden mb-3">
+                        <div class="position-relative">
+                            <img src="{{ $product->image_url }}" id="main-image" class="img-fluid w-100 transition-all"
+                                alt="{{ $product->name }}" style="height: 500px; object-fit: contain; padding: 2rem;">
 
-                    @if($product->has_discount)
-                    <span class="badge bg-danger position-absolute top-0 start-0 m-3 fs-6">
-                        -{{ $product->discount_percentage }}%
-                    </span>
-                    @endif
-                </div>
+                            @if($product->has_discount)
+                            <div class="position-absolute top-0 start-0 m-4">
+                                <span class="badge bg-coffee-accent rounded-pill px-3 py-2 fw-bold shadow">
+                                    Hemat {{ $product->discount_percentage }}%
+                                </span>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
 
-                {{-- Thumbnail Gallery --}}
-                @if($product->images->count() > 1)
-                <div class="card-body">
-                    <div class="d-flex gap-2 overflow-auto">
+                    {{-- Thumbnail Gallery --}}
+                    @if($product->images->count() > 1)
+                    <div class="d-flex gap-3 justify-content-center overflow-auto py-2 custom-scrollbar">
                         @foreach($product->images as $image)
-                        <img src="{{ asset('storage/' . $image->image_path) }}" class="rounded border cursor-pointer"
-                            style="width: 80px; height: 80px; object-fit: cover; cursor: pointer;"
-                            onclick="document.getElementById('main-image').src = this.src">
+                        <div class="thumb-container rounded-4 border-coffee-dim p-1 cursor-pointer transition-all glass-card shadow-sm"
+                            onclick="changeMainImage('{{ asset('storage/' . $image->image_path) }}', this)">
+                            <img src="{{ asset('storage/' . $image->image_path) }}" class="rounded-3"
+                                style="width: 70px; height: 70px; object-fit: cover;">
+                        </div>
                         @endforeach
                     </div>
+                    @endif
                 </div>
-                @endif
             </div>
-        </div>
 
-        {{-- Product Info --}}
-        <div class="col-lg-6">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    {{-- Category --}}
-                    <a href="{{ route('catalog.index', ['category' => $product->category->slug]) }}"
-                        class="badge bg-light text-dark text-decoration-none mb-2">
-                        {{ $product->category->name }}
-                    </a>
+            {{-- Area Informasi Produk --}}
+            <div class="col-lg-6 text-white" data-aos="fade-left">
+                <div class="ps-lg-4">
+                    <div class="mb-2">
+                        <span
+                            class="badge bg-coffee-dim text-coffee-light rounded-pill px-3 py-2 fw-bold text-uppercase small">
+                            <i class="bi bi-cup-hot-fill me-1"></i> {{ $product->category->name }}
+                        </span>
+                    </div>
 
-                    {{-- Title --}}
-                    <h2 class="mb-3">{{ $product->name }}</h2>
+                    <h1 class="display-5 fw-bolder mb-3 serif-font">{{ $product->name }}</h1>
 
-                    {{-- Price --}}
-                    <div class="mb-4">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div class="h2 fw-bolder text-coffee-light mb-0">
+                            {{ $product->formatted_price }}
+                        </div>
                         @if($product->has_discount)
-                        <div class="text-muted text-decoration-line-through">
+                        <div class="h4 text-white-50 text-decoration-line-through mb-0 opacity-50">
                             {{ $product->formatted_original_price }}
                         </div>
                         @endif
-                        <div class="h3 text-primary fw-bold mb-0">
-                            {{ $product->formatted_price }}
-                        </div>
                     </div>
 
-                    {{-- Stock Status --}}
-                    <div class="mb-4">
-                        @if($product->stock > 10)
-                        <span class="badge bg-success">
-                            <i class="bi bi-check-circle me-1"></i> Stok Tersedia
-                        </span>
-                        @elseif($product->stock > 0)
-                        <span class="badge bg-warning text-dark">
-                            <i class="bi bi-exclamation-triangle me-1"></i> Stok Tinggal {{ $product->stock }}
-                        </span>
-                        @else
-                        <span class="badge bg-danger">
-                            <i class="bi bi-x-circle me-1"></i> Stok Habis
-                        </span>
-                        @endif
-                    </div>
+                    <p class="text-white-50 mb-4 lh-lg" style="font-size: 1.1rem;">
+                        {{ $product->description_short ?? 'Pilihan biji kopi terbaik yang disangrai dengan presisi untuk
+                        menghasilkan aroma dan cita rasa yang tak terlupakan.' }}
+                    </p>
 
-                    {{-- Add to Cart Form --}}
-                    <form action="{{ route('cart.add') }}" method="POST" class="mb-4">
-                        @csrf
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    {{-- Form Transaksi --}}
+                    <div class="card border-0 glass-card rounded-4 p-4 mb-4 shadow-lg">
+                        <form action="{{ route('cart.add') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
 
-                        <div class="row g-3 align-items-end">
-                            <div class="col-auto">
-                                <label class="form-label">Jumlah</label>
-                                <div class="input-group" style="width: 140px;">
-                                    <button type="button" class="btn btn-outline-secondary"
-                                        onclick="decrementQty()">-</button>
-                                    <input type="number" name="quantity" id="quantity" value="1" min="1"
-                                        max="{{ $product->stock }}" class="form-control text-center">
-                                    <button type="button" class="btn btn-outline-secondary"
-                                        onclick="incrementQty()">+</button>
+                            <div class="row g-3 align-items-center">
+                                <div class="col-md-4">
+                                    <label
+                                        class="form-label small fw-bold text-uppercase text-coffee-light">Jumlah</label>
+                                    <div
+                                        class="input-group input-group-lg shadow-sm rounded-pill overflow-hidden border-coffee-dim">
+                                        <button type="button" class="btn btn-coffee-dark border-0 px-3 text-white"
+                                            onclick="decrementQty()">
+                                            <i class="bi bi-dash-lg"></i>
+                                        </button>
+                                        <input type="number" name="quantity" id="quantity" value="1" min="1"
+                                            max="{{ $product->stock }}"
+                                            class="form-control border-0 text-center fw-bold bg-transparent text-white shadow-none">
+                                        <button type="button" class="btn btn-coffee-dark border-0 px-3 text-white"
+                                            onclick="incrementQty()">
+                                            <i class="bi bi-plus-lg"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <label class="form-label d-none d-md-block">&nbsp;</label>
+                                    <button type="submit"
+                                        class="btn btn-coffee-light btn-lg w-100 rounded-pill fw-bold shadow-glow-warm py-3"
+                                        @if($product->stock == 0) disabled @endif>
+                                        <i class="bi bi-bag-plus-fill me-2"></i>
+                                        @if($product->stock == 0) Stok Habis @else Tambah Ke Keranjang @endif
+                                    </button>
                                 </div>
                             </div>
-                            <div class="col">
-                                <button type="submit" class="btn btn-primary btn-lg w-100" @if($product->stock == 0)
-                                    disabled @endif>
-                                    <i class="bi bi-cart-plus me-2"></i>
-                                    Tambah ke Keranjang
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-
-                    {{-- Wishlist --}}
-                    @auth
-                    <button type="button" onclick="toggleWishlist({{ $product->id }})"
-                        class="btn btn-outline-danger mb-4 wishlist-btn-{{ $product->id }}">
-                        <i
-                            class="bi {{ auth()->user()->hasInWishlist($product) ? 'bi-heart-fill' : 'bi-heart' }} me-2"></i>
-                        {{ auth()->user()->hasInWishlist($product) ? 'Hapus dari Wishlist' : 'Tambah ke Wishlist' }}
-                    </button>
-                    @endauth
-
-                    <hr>
-
-                    {{-- Product Details --}}
-                    <div class="mb-3">
-                        <h6>Deskripsi</h6>
-                        <p class="text-muted">{!! nl2br(e($product->description)) !!}</p>
+                        </form>
                     </div>
 
-                    <div class="row text-muted small">
-                        <div class="col-6 mb-2">
-                            <i class="bi bi-box me-2"></i> Berat: {{ $product->weight }} gram
+                    {{-- Wishlist & Share --}}
+                    <div class="d-flex gap-3 mb-5">
+                        @auth
+                        <button type="button" onclick="toggleWishlist({{ $product->id }})"
+                            class="btn btn-outline-coffee rounded-pill px-4 py-2 fw-bold flex-grow-1 transition-all">
+                            <i
+                                class="bi {{ auth()->user()->hasInWishlist($product) ? 'bi-heart-fill' : 'bi-heart' }} me-2"></i>
+                            Favorit
+                        </button>
+                        @endauth
+                        <button
+                            class="btn btn-outline-light border-opacity-25 rounded-pill px-4 py-2 fw-bold flex-grow-1">
+                            <i class="bi bi-share me-2"></i> Bagikan
+                        </button>
+                    </div>
+
+                    {{-- Tabs Info --}}
+                    <ul class="nav nav-tabs border-0 gap-4 mb-3" id="productTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active border-0 fw-bold px-0 text-white" id="desc-tab"
+                                data-bs-toggle="tab" href="#desc">Deskripsi</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link border-0 fw-bold px-0 text-white-50" id="spec-tab" data-bs-toggle="tab"
+                                href="#spec">Spesifikasi</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content text-white-50 small lh-lg mb-5" id="productTabContent">
+                        <div class="tab-pane fade show active" id="desc">
+                            {!! nl2br(e($product->description)) !!}
                         </div>
-                        <div class="col-6 mb-2">
-                            <i class="bi bi-tag me-2"></i> SKU: PROD-{{ $product->id }}
+                        <div class="tab-pane fade" id="spec">
+                            <table class="table table-sm table-borderless text-white-50">
+                                <tr>
+                                    <td class="ps-0 fw-bold text-coffee-light" width="150">SKU</td>
+                                    <td>: PROD-COFFEE-{{ $product->id }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0 fw-bold text-coffee-light">Berat</td>
+                                    <td>: {{ $product->weight }} gram</td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-0 fw-bold text-coffee-light">Ketersediaan</td>
+                                    <td>: {{ $product->stock > 0 ? 'Ready Stock' : 'Habis' }}</td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -155,12 +173,120 @@ FUNGSI: Halaman detail produk
     </div>
 </div>
 
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+
+    .serif-font {
+        font-family: 'Playfair Display', serif;
+    }
+
+    .main-page-wrapper {
+        background: linear-gradient(180deg, #1a0f0a 0%, #2c1b12 100%);
+    }
+
+    /* Glassmorphism Elements */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.03) !important;
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(212, 163, 115, 0.1) !important;
+    }
+
+    .glass-breadcrumb {
+        background: rgba(212, 163, 115, 0.05) !important;
+        backdrop-filter: blur(10px);
+    }
+
+    /* Colors */
+    .text-coffee-light {
+        color: #d4a373 !important;
+    }
+
+    .bg-coffee-accent {
+        background-color: #8b5a2b !important;
+    }
+
+    .bg-coffee-dim {
+        background-color: rgba(212, 163, 115, 0.1) !important;
+    }
+
+    .border-coffee-dim {
+        border: 1px solid rgba(212, 163, 115, 0.2) !important;
+    }
+
+    .btn-coffee-dark {
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    .thumb-container:hover,
+    .thumb-container.active {
+        border-color: #d4a373 !important;
+        transform: scale(1.05);
+    }
+
+    .btn-coffee-light {
+        background-color: #d4a373;
+        color: #1a0f0a;
+        border: none;
+    }
+
+    .btn-coffee-light:hover {
+        background-color: #faedcd;
+        transform: translateY(-2px);
+    }
+
+    .btn-outline-coffee {
+        border-color: #d4a373;
+        color: #d4a373;
+    }
+
+    .btn-outline-coffee:hover {
+        background-color: #d4a373;
+        color: #1a0f0a;
+    }
+
+    .shadow-glow-warm {
+        box-shadow: 0 10px 20px rgba(212, 163, 115, 0.2);
+    }
+
+    /* Tabs Styling */
+    .nav-tabs .nav-link {
+        position: relative;
+        transition: all 0.3s;
+    }
+
+    .nav-tabs .nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: #d4a373;
+        border-radius: 10px;
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+
 @push('scripts')
 <script>
+    function changeMainImage(src, element) {
+        document.getElementById('main-image').src = src;
+        document.querySelectorAll('.thumb-container').forEach(el => el.classList.remove('active'));
+        element.classList.add('active');
+    }
+
     function incrementQty() {
         const input = document.getElementById('quantity');
-        const max = parseInt(input.max);
-        if (parseInt(input.value) < max) {
+        if (parseInt(input.value) < parseInt(input.max)) {
             input.value = parseInt(input.value) + 1;
         }
     }

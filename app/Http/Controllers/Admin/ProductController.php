@@ -21,27 +21,26 @@ class ProductController extends Controller
      * Menampilkan daftar produk dengan pagination & filtering.
      */
     public function index(Request $request): View
-    {
-       $products = Product::query()
-    ->select('id', 'name', 'price', 'stock', 'slug', 'category_id', 'created_at')
-    ->with(['category:id,name', 'primaryImage:id,product_id,image_path,is_primary'])
-    ->when($request->search, fn($query, $search) => $query->where('name', 'like', "%{$search}%"))
-    ->when($request->category, fn($query, $categoryId) => $query->where('category_id', $categoryId))
-    ->latest()
-    ->paginate(15)
-    ->withQueryString();
+{
+    $products = Product::query()
+        ->select('id', 'name', 'price', 'stock', 'slug', 'category_id', 'is_active', 'created_at')
+        ->with(['category:id,name', 'primaryImage:id,product_id,image_path,is_primary'])
+        ->when($request->search, fn($query, $search) => $query->where('name', 'like', "%{$search}%"))
+        ->when($request->category, fn($query, $catId) => $query->where('category_id', $catId))
+        // Tambahkan filter status di sini
+        ->when($request->filled('status'), function ($query) use ($request) {
+            $query->where('is_active', $request->status);
+        })
+        ->latest()
+        ->paginate(15)
+        ->withQueryString();
 
+    $categories = Cache::remember('global_categories', 3600, function () {
+        return Category::select('id', 'name')->withCount('products')->orderBy('name')->get();
+    });
 
-        // Ambil kategori dari cache
-        $categories = Cache::remember('global_categories', 3600, function () {
-            return Category::select('id', 'name')
-                ->withCount('products')
-                ->orderBy('name')
-                ->get();
-        });
-
-        return view('admin.products.index', compact('products', 'categories'));
-    }
+    return view('admin.products.index', compact('products', 'categories'));
+}
 
     /**
      * Form tambah produk.

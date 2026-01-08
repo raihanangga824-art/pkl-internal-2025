@@ -3,83 +3,98 @@
 @section('title', 'Manajemen Pesanan')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="h3 mb-0 text-gray-800">Daftar Pesanan</h2>
-</div>
-
-<div class="card shadow-sm border-0">
-    <div class="card-header bg-white py-3">
-        {{-- Filter Status --}}
-        <ul class="nav nav-pills card-header-pills">
-            <li class="nav-item">
-                <a class="nav-link {{ !request('status') ? 'active' : '' }}"
-                    href="{{ route('admin.orders.index') }}">Semua</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request('status') == 'pending' ? 'active' : '' }}"
-                    href="{{ route('admin.orders.index', ['status' => 'pending']) }}">Pending</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request('status') == 'processing' ? 'active' : '' }}"
-                    href="{{ route('admin.orders.index', ['status' => 'processing']) }}">Diproses</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request('status') == 'completed' ? 'active' : '' }}"
-                    href="{{ route('admin.orders.index', ['status' => 'completed']) }}">Selesai</a>
-            </li>
-        </ul>
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-end mb-4">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item"><a href="#">Admin</a></li>
+                    <li class="breadcrumb-item active">Pesanan</li>
+                </ol>
+            </nav>
+            <h2 class="h3 mb-0 fw-bold text-gray-800">Manajemen Pesanan</h2>
+        </div>
+        <div class="text-muted small">Total: {{ $orders->total() }} Pesanan</div>
     </div>
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th class="ps-4">No. Order</th>
-                        <th>Customer</th>
-                        <th>Tanggal</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                        <th class="text-end pe-4">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($orders as $order)
-                    <tr>
-                        <td class="ps-4 fw-bold text-primary">#{{ $order->order_number }}</td>
-                        <td>
-                            <div class="fw-bold">{{ $order->user->name }}</div>
-                            <small class="text-muted">{{ $order->user->email }}</small>
-                        </td>
-                        <td>{{ $order->created_at->format('d M Y H:i') }}</td>
-                        <td class="fw-bold">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
-                        <td>
-                            @if($order->status == 'pending')
-                            <span class="badge bg-warning text-dark">Pending</span>
-                            @elseif($order->status == 'processing')
-                            <span class="badge bg-info text-dark">Diproses</span>
-                            @elseif($order->status == 'completed')
-                            <span class="badge bg-success">Selesai</span>
-                            @elseif($order->status == 'cancelled')
-                            <span class="badge bg-danger">Batal</span>
-                            @endif
-                        </td>
-                        <td class="text-end pe-4">
-                            <a href="{{ route('admin.orders.show', $order) }}" class="btn btn-sm btn-outline-primary">
-                                Detail
-                            </a>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="6" class="text-center py-5 text-muted">Tidak ada pesanan ditemukan.</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
+
+    {{-- Filter Bar Modern --}}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="bg-white p-2 rounded-3 shadow-sm d-flex overflow-auto">
+                <a class="btn btn-sm me-2 {{ !request('status') ? 'btn-primary' : 'btn-light' }}"
+                    href="{{ route('admin.orders.index') }}">Semua</a>
+
+                @foreach(['pending' => 'Pending', 'processing' => 'Diproses', 'completed' => 'Selesai', 'cancelled' =>
+                'Batal'] as $key => $label)
+                <a class="btn btn-sm me-2 {{ request('status') == $key ? 'btn-primary' : 'btn-light text-muted' }}"
+                    href="{{ route('admin.orders.index', ['status' => $key]) }}">
+                    {{ $label }}
+                </a>
+                @endforeach
+            </div>
         </div>
     </div>
-    <div class="card-footer bg-white">
+
+    {{-- Grid Layout --}}
+    <div class="row">
+        @forelse($orders as $order)
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100 order-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <span class="text-primary fw-bold">#{{ $order->order_number }}</span>
+                            <div class="text-muted small mt-1">
+                                <i class="bi bi-clock me-1"></i> {{ $order->created_at->diffForHumans() }}
+                            </div>
+                        </div>
+                        @php
+                        $statusClass = [
+                        'pending' => 'bg-warning-subtle text-warning',
+                        'processing' => 'bg-info-subtle text-info',
+                        'completed' => 'bg-success-subtle text-success',
+                        'cancelled' => 'bg-danger-subtle text-danger'
+                        ][$order->status] ?? 'bg-secondary-subtle';
+                        @endphp
+                        <span class="badge {{ $statusClass }} px-3 py-2 rounded-pill shadow-none">
+                            {{ ucfirst($order->status) }}
+                        </span>
+                    </div>
+
+                    <div class="d-flex align-items-center mb-4 p-3 bg-light rounded-3">
+                        <div class="avatar-circle me-3">
+                            {{ strtoupper(substr($order->user->name, 0, 1)) }}
+                        </div>
+                        <div>
+                            <div class="fw-bold text-dark">{{ $order->user->name }}</div>
+                            <div class="small text-muted">{{ $order->user->email }}</div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted small">Total Pembayaran</div>
+                            <div class="h5 mb-0 fw-bold text-dark">Rp {{ number_format($order->total_amount, 0, ',',
+                                '.') }}</div>
+                        </div>
+                        <a href="{{ route('admin.orders.show', $order) }}"
+                            class="btn btn-outline-primary btn-sm px-4 rounded-pill">
+                            Detail <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @empty
+        <div class="col-12 text-center py-5">
+            <img src="https://illustrations.popsy.co/gray/box.svg" alt="empty" style="width: 150px;" class="mb-3">
+            <h5 class="text-muted">Tidak ada pesanan ditemukan.</h5>
+        </div>
+        @endforelse
+    </div>
+
+    <div class="mt-4">
         {{ $orders->links() }}
     </div>
 </div>
-@endsection 
+@endsection
