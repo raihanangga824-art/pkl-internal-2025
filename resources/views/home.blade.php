@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Artisan Coffee - Seduhan Terbaik Setiap Hari')
+@section('title', 'RaihanCoffeStore - Seduhan Terbaik Setiap Hari')
 
 @section('content')
 
@@ -16,9 +16,9 @@
 
                 <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right" data-aos-duration="1200" data-aos-delay="200">
 
-                    <span class="badge bg-info bg-opacity-25 text-info px-3 py-2 rounded-pill mb-3 fw-bold">
+                    {{-- <span class="badge bg-info bg-opacity-25 text-info px-3 py-2 rounded-pill mb-3 fw-bold">
                         <i class="bi bi-cup-hot me-1"></i> Freshly Roasted 2026
-                    </span>
+                    </span> --}}
 
                     <h1 class="display-3 fw-bolder mb-3 lh-1 serif-font">
                         Nikmati <br>

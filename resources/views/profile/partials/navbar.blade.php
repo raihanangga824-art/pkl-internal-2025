@@ -70,7 +70,7 @@
                         <li><a class="dropdown-item py-2 text-white" href="{{ route('profile.edit') }}"><i
                                     class="bi bi-person me-2"></i> Profil</a></li>
                         <li><a class="dropdown-item py-2 text-white" href="{{ route('orders.index') }}"><i
-                                    class="bi bi-clock-history me-2"></i> Riwayat</a></li>
+                                    class="bi bi-clock-history me-2"></i> Riwayat Pesanan</a></li>
 
                         @if(auth()->user()->isAdmin())
                         <li>

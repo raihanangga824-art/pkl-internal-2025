@@ -147,7 +147,7 @@
                         style="width: 35px; height: 35px;">
                         <i class="bi bi-lightning-charge-fill text-white"></i>
                     </div>
-                    <span class="fs-5 fw-bold tracking-tight text-dark">RaihanStore<span
+                    <span class="fs-5 fw-bold tracking-tight text-dark">RaihanCoffeStore<span
                             class="text-primary">.</span></span>
                 </a>
             </div>

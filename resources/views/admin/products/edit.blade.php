@@ -93,7 +93,6 @@
                     </div>
                 </div>
 
-                {{-- Deskripsi Produk (Opsi Tambahan) --}}
                 <div class="card border-0 shadow-sm rounded-4">
                     <div class="card-body p-4">
                         <label class="form-label fw-bold small text-muted text-uppercase">Deskripsi Produk</label>
@@ -105,7 +104,6 @@
 
             {{-- Kolom Kanan: Media & Actions --}}
             <div class="col-xl-4 col-lg-5" data-aos="fade-left">
-                {{-- Preview Media --}}
                 <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
                     <div
                         class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
@@ -114,38 +112,40 @@
                             Foto</span>
                     </div>
                     <div class="card-body p-4">
-                        <div class="image-preview-grid d-flex flex-wrap gap-2 mb-3">
+
+                        {{-- Foto yang SUDAH ADA --}}
+                        <p class="small text-muted text-uppercase fw-bold mb-2">Foto Saat Ini</p>
+                        <div class="image-preview-grid d-flex flex-wrap gap-2 mb-4">
                             @forelse($product->images as $image)
                             <div class="position-relative group overflow-hidden rounded-3 border"
-                                style="width: 100px; height: 100px;">
+                                style="width: 80px; height: 80px;">
                                 <img src="{{ asset('storage/' . $image->image_path) }}"
-                                    class="w-100 h-100 object-fit-cover transition-all">
-                                <div
-                                    class="overlay-action position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50 opacity-0 group-hover-opacity-100 transition-all">
-                                    <i class="bi bi-eye text-white fs-4 cursor-pointer"></i>
-                                </div>
+                                    class="w-100 h-100 object-fit-cover">
                             </div>
                             @empty
-                            <div class="text-center w-100 py-4 border border-dashed rounded-3">
-                                <i class="bi bi-image text-muted fs-1"></i>
-                                <p class="text-muted small">Tidak ada gambar</p>
+                            <div class="text-center w-100 py-3 border border-dashed rounded-3">
+                                <p class="text-muted small mb-0">Belum ada foto</p>
                             </div>
                             @endforelse
                         </div>
 
+                        {{-- AREA PREVIEW FOTO BARU --}}
+                        <div id="new-images-preview" class="d-flex flex-wrap gap-2 mb-3">
+                        </div>
+
                         <div
                             class="upload-zone p-3 bg-light rounded-4 text-center border-2 border-dashed border-primary-subtle">
-                            <input type="file" name="images[]" multiple class="form-control d-none" id="imageInput">
-                            <label for="imageInput" class="cursor-pointer">
+                            <input type="file" name="images[]" multiple class="form-control d-none" id="imageInput"
+                                accept="image/*">
+                            <label for="imageInput" class="cursor-pointer w-100">
                                 <i class="bi bi-cloud-arrow-up fs-2 text-primary"></i>
-                                <p class="mb-0 small fw-bold mt-2 text-dark">Upload Gambar Baru</p>
-                                <span class="text-muted x-small">Format: JPG, PNG, WEBP</span>
+                                <p class="mb-0 small fw-bold mt-2 text-dark">Pilih Foto Baru</p>
+                                <span class="text-muted x-small">Bisa pilih lebih dari satu</span>
                             </label>
                         </div>
                     </div>
                 </div>
 
-                {{-- Card Simpan --}}
                 <div class="card border-0 shadow-sm rounded-4 bg-primary-gradient p-2">
                     <div class="card-body">
                         <button type="submit" class="btn btn-white w-100 rounded-pill py-3 fw-bold shadow-sm mb-2">
@@ -177,14 +177,6 @@
         cursor: pointer;
     }
 
-    .group-hover-opacity-100 {
-        transition: 0.3s;
-    }
-
-    .position-relative:hover .group-hover-opacity-100 {
-        opacity: 1 !important;
-    }
-
     .object-fit-cover {
         object-fit: cover;
     }
@@ -196,5 +188,38 @@
     .border-dashed {
         border-style: dashed !important;
     }
+
+    /* Style untuk Preview Baru */
+    .preview-item {
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+        position: relative;
+        border: 2px solid #2563eb;
+    }
 </style>
+
+{{-- SCRIPT UNTUK PREVIEW --}}
+<script>
+    document.getElementById('imageInput').addEventListener('change', function() {
+        const previewContainer = document.getElementById('new-images-preview');
+        previewContainer.innerHTML = ''; // Reset preview saat pilih ulang
+        
+        if (this.files) {
+            Array.from(this.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgDiv = document.createElement('div');
+                    imgDiv.classList.add('preview-item', 'overflow-hidden');
+                    imgDiv.innerHTML = `
+                        <img src="${e.target.result}" class="w-100 h-100 object-fit-cover">
+                        <div class="position-absolute top-0 start-0 bg-primary text-white p-1" style="font-size: 10px">Baru</div>
+                    `;
+                    previewContainer.appendChild(imgDiv);
+                }
+                reader.readAsDataURL(file);
+            });
+        }
+    });
+</script>
 @endsection
