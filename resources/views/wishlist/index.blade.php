@@ -1,209 +1,202 @@
-{{-- resources/views/wishlist/index.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'Wishlist Saya - Artisan Coffee')
+@section('title', 'Wishlist Saya')
 
 @section('content')
-<div class="wishlist-section min-vh-100 py-5">
-    {{-- Decorative Orbs --}}
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
 
-    <div class="container position-relative" style="z-index: 10;">
-        {{-- Header Section: Mirroring Home Title Style --}}
-        <div class="row mb-5" data-aos="fade-up">
-            <div class="col-md-8">
-                <h6 class="text-gold text-uppercase ls-2 fw-bold small mb-2">Koleksi Anda</h6>
-                <h2 class="display-5 text-white serif-font fw-bold mb-0">Wishlist <span class="text-gold">Saya</span>
-                </h2>
-                <div class="divider-gold mt-3"></div>
-            </div>
-            @if($products->count())
-            <div class="col-md-4 text-md-end d-flex align-items-end justify-content-md-end mt-3 mt-md-0">
-                <p class="text-white-50 mb-0">Menampilkan <span class="text-white fw-bold">{{ $products->total()
-                        }}</span> produk favorit</p>
-            </div>
-            @endif
-        </div>
-
-        @if($products->count())
-        {{-- Grid: Menyamakan Row-Cols dengan Home --}}
-        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 g-md-4" data-aos="fade-up" data-aos-delay="100">
-            @foreach($products as $product)
-            <div class="col">
-                <div class="home-style-card-wrapper h-100">
-                    <x-product-card :product="$product" />
-                </div>
-            </div>
-            @endforeach
-        </div>
-
-        {{-- Pagination --}}
-        <div class="d-flex justify-content-center mt-5" data-aos="fade-up">
-            <div class="gold-pagination">
-                {{ $products->links() }}
-            </div>
-        </div>
-        @else
-        {{-- Empty State: Elegant Glass --}}
-        <div class="text-center py-5 glass-box rounded-5 border border-white-10 shadow-lg" data-aos="zoom-in">
-            <div class="icon-circle-lg mb-4">
-                <i class="bi bi-heart text-gold"></i>
-            </div>
-            <h3 class="text-white serif-font fw-bold">Wishlist Kosong</h3>
-            <p class="text-white-50 mb-4 px-4">Anda belum menyimpan produk apapun. Temukan racikan kopi terbaik kami
-                sekarang.</p>
-            <a href="{{ route('catalog.index') }}" class="btn btn-outline-gold px-5 py-3 rounded-pill fw-bold">
-                <i class="bi bi-arrow-left me-2"></i>Mulai Belanja
-            </a>
-        </div>
-        @endif
-    </div>
-</div>
-
+{{-- =======================
+STYLE (Wishlist Only)
+======================= --}}
 <style>
-    /* 1. LAYOUT BASE */
-    .wishlist-section {
+    /* =======================
+       BASE THEME
+    ======================= */
+    body {
         background-color: #0f0a07;
-        position: relative;
-        overflow: hidden;
+        background-image:
+            radial-gradient(circle at 10% 20%, rgba(212, 163, 115, .06) 0%, transparent 25%),
+            radial-gradient(circle at 90% 80%, rgba(212, 163, 115, .06) 0%, transparent 25%);
+        color: #f8f9fa;
+        min-height: 100vh;
     }
 
-    .serif-font {
+    /* =======================
+       HERO HEADER
+    ======================= */
+    .wishlist-hero {
+        padding: 4rem 0 3rem;
+        text-align: center;
+    }
+
+    .wishlist-hero h1 {
         font-family: 'Playfair Display', serif;
-    }
-
-    .text-gold {
-        color: #d4a373 !important;
-    }
-
-    .ls-2 {
-        letter-spacing: 2px;
-    }
-
-    .divider-gold {
-        width: 60px;
-        height: 3px;
-        background: #d4a373;
-    }
-
-    /* 2. CARD OVERRIDE (FORCE TO MATCH HOME STYLE) */
-    .home-style-card-wrapper .card {
-        background: #1a120e !important;
-        /* Warna gelap solid agar serasi dengan home */
-        border: 1px solid rgba(255, 255, 255, 0.05) !important;
-        border-radius: 15px !important;
-        transition: all 0.4s ease;
-        overflow: hidden;
-        height: 100%;
-    }
-
-    .home-style-card-wrapper .card:hover {
-        transform: translateY(-10px);
-        border-color: #d4a373 !important;
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-    }
-
-    .home-style-card-wrapper .card-img-top {
-        border-radius: 15px 15px 0 0 !important;
-        transition: transform 0.6s ease;
-    }
-
-    .home-style-card-wrapper .card:hover .card-img-top {
-        transform: scale(1.08);
-    }
-
-    /* Sinkronisasi warna teks di dalam card */
-    .home-style-card-wrapper .card-body {
-        color: white !important;
-        padding: 1.25rem;
-    }
-
-    .home-style-card-wrapper .card-title {
-        color: #ffffff !important;
-        font-size: 1.1rem;
-        font-weight: 600;
-    }
-
-    .home-style-card-wrapper .text-muted {
-        color: #a1a1a1 !important;
-        font-size: 0.85rem;
-    }
-
-    .home-style-card-wrapper .price,
-    .home-style-card-wrapper .text-primary {
-        color: #d4a373 !important;
-        font-weight: 700;
-    }
-
-    /* 3. EMPTY STATE UI */
-    .glass-box {
-        background: rgba(255, 255, 255, 0.02);
-        backdrop-filter: blur(15px);
-    }
-
-    .border-white-10 {
-        border-color: rgba(255, 255, 255, 0.1) !important;
-    }
-
-    .icon-circle-lg {
-        width: 90px;
-        height: 90px;
-        background: rgba(212, 163, 115, 0.1);
-        border-radius: 50%;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 3rem;
-    }
-
-    .btn-outline-gold {
-        border: 2px solid #d4a373;
+        font-weight: 800;
+        font-size: 3.5rem;
         color: #d4a373;
-        transition: all 0.3s;
+        letter-spacing: -1px;
+        margin-bottom: .5rem;
     }
 
-    .btn-outline-gold:hover {
+    .wishlist-hero p {
+        color: rgba(255, 255, 255, .6);
+        font-size: 1.05rem;
+        letter-spacing: .5px;
+    }
+
+    .count-pill {
+        display: inline-block;
+        margin-bottom: 1rem;
+        background: rgba(212, 163, 115, .15);
+        border: 1px solid rgba(212, 163, 115, .35);
+        padding: 6px 18px;
+        border-radius: 50px;
+        font-size: .85rem;
+        color: #d4a373;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    /* =======================
+       GRID
+    ======================= */
+    .wishlist-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .wishlist-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2.5rem;
+        padding-bottom: 4rem;
+    }
+
+    .wishlist-item {
+        transition: transform .35s ease, box-shadow .35s ease;
+    }
+
+    .wishlist-item:hover {
+        transform: translateY(-8px);
+    }
+
+    /* =======================
+       EMPTY STATE
+    ======================= */
+    .empty-state-box {
+        margin: 4rem auto;
+        padding: 100px 25px;
+        max-width: 720px;
+        border-radius: 30px;
+        background: rgba(255, 255, 255, .03);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(212, 163, 115, .15);
+        text-align: center;
+    }
+
+    .empty-state-box i {
+        font-size: 4rem;
+        color: rgba(212, 163, 115, .25);
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-browse {
         background: #d4a373;
-        color: #0f0a07;
+        color: #1a0f0a;
+        font-weight: 700;
+        padding: 12px 36px;
+        border-radius: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border: none;
+        transition: .3s ease;
     }
 
-    /* 4. DECORATIVE BACKGROUNDS */
-    .orb {
-        position: absolute;
-        border-radius: 50%;
-        filter: blur(100px);
-        z-index: 1;
-        opacity: 0.1;
+    .btn-browse:hover {
+        background: #faedcd;
+        transform: translateY(-3px);
+        box-shadow: 0 12px 25px rgba(212, 163, 115, .25);
+        color: #1a0f0a;
     }
 
-    .orb-1 {
-        width: 400px;
-        height: 400px;
-        background: #d4a373;
-        top: -100px;
-        right: -50px;
-    }
+    /* =======================
+       RESPONSIVE
+    ======================= */
+    @media (max-width: 768px) {
+        .wishlist-hero h1 {
+            font-size: 2.4rem;
+        }
 
-    .orb-2 {
-        width: 300px;
-        height: 300px;
-        background: #634832;
-        bottom: 50px;
-        left: -50px;
-    }
-
-    /* 5. PAGINATION */
-    .gold-pagination .page-link {
-        background: transparent;
-        border-color: rgba(212, 163, 115, 0.3);
-        color: white;
-    }
-
-    .gold-pagination .page-item.active .page-link {
-        background: #d4a373;
-        border-color: #d4a373;
-        color: #0f0a07;
+        .wishlist-grid {
+            gap: 1.6rem;
+        }
     }
 </style>
+
+{{-- =======================
+CONTENT
+======================= --}}
+<div class="container wishlist-container">
+
+    @if ($products->count() > 0)
+
+    {{-- HEADER --}}
+    <header class="wishlist-hero">
+        <span class="count-pill">
+            {{ $products->total() ?? $products->count() }} Items
+        </span>
+
+        <h1>Favorit Saya</h1>
+
+        <p class="fst-italic">
+            Koleksi pilihan racikan terbaik untuk Anda
+        </p>
+
+        <div class="mt-4">
+            <a href="{{ route('catalog.index') }}"
+                class="text-decoration-none text-white-50 fw-bold text-uppercase small">
+                <i class="bi bi-chevron-left me-1"></i> Kembali ke Katalog
+            </a>
+        </div>
+    </header>
+
+    {{-- GRID --}}
+    <div class="wishlist-grid">
+        @foreach ($products as $product)
+        <div class="wishlist-item animate__animated animate__fadeInUp">
+            <x-product-card :product="$product" />
+        </div>
+        @endforeach
+    </div>
+
+    {{-- PAGINATION --}}
+    @if (method_exists($products, 'links'))
+    <div class="d-flex justify-content-center pb-5">
+        {{ $products->links() }}
+    </div>
+    @endif
+
+    @else
+
+    {{-- EMPTY STATE --}}
+    <div class="empty-state-box">
+        <i class="bi bi-cup-hot"></i>
+
+        <h2 class="serif-font text-white mb-3">
+            Belum ada yang disukai?
+        </h2>
+
+        <p class="text-white-50 mx-auto mb-5" style="max-width: 480px;">
+            Tandai kopi atau snack favoritmu saat menjelajah katalog
+            agar muncul di sini dan mudah ditemukan nanti.
+        </p>
+
+        <a href="{{ route('catalog.index') }}" class="btn btn-browse">
+            Mulai Menjelajah
+        </a>
+    </div>
+
+    @endif
+
+</div>
 @endsection

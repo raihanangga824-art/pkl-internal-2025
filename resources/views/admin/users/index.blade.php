@@ -44,7 +44,7 @@
                             <th class="py-3 text-uppercase fs-xs fw-bold text-secondary text-center">Role</th>
                             <th class="py-3 text-uppercase fs-xs fw-bold text-secondary text-center">Verifikasi</th>
                             <th class="py-3 text-uppercase fs-xs fw-bold text-secondary text-center">Bergabung</th>
-                            <th class="pe-4 py-3 text-uppercase fs-xs fw-bold text-secondary text-end">Aksi</th>
+                            {{-- <th class="pe-4 py-3 text-uppercase fs-xs fw-bold text-secondary text-end">Aksi</th> --}}
                         </tr>
                     </thead>
                     <tbody class="border-top-0">
@@ -87,12 +87,12 @@
                                 {{ $user->created_at->format('d M Y') }}
                             </td>
                             <td class="text-end pe-4">
-                                <div class="dropdown">
-                                    <button class="btn btn-light btn-sm rounded-circle p-0"
+                                {{-- <div class="dropdown"> --}}
+                                    {{-- <button class="btn btn-light btn-sm rounded-circle p-0"
                                         style="width: 32px; height: 32px;" data-bs-toggle="dropdown">
                                         <i class="bi bi-three-dots-vertical"></i>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
+                                    </button> --}}
+                                    {{-- <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
                                         <li><a class="dropdown-item small py-2" href="#"><i
                                                     class="bi bi-pencil me-2"></i> Edit Profil</a></li>
                                         <li><a class="dropdown-item small py-2 text-primary" href="#"><i
@@ -102,8 +102,8 @@
                                         </li>
                                         <li><a class="dropdown-item small py-2 text-danger" href="#"><i
                                                     class="bi bi-trash me-2"></i> Hapus User</a></li>
-                                    </ul>
-                                </div>
+                                    </ul> --}}
+                                {{-- </div> --}}
                             </td>
                         </tr>
                         @empty

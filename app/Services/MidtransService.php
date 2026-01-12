@@ -45,7 +45,7 @@ class MidtransService
         // Jangan kirim float/string pecahan!
         $transactionDetails = [
             'order_id'     => $order->order_number, // ID Unik Order
-            'gross_amount' => (int) $order->total_amount,
+            'gross_amount' => (int) round($order->total_amount),
         ];
 
         // 2. Customer Details (Opsional tapi Recommended)
@@ -68,10 +68,10 @@ class MidtransService
 
         // 3. Item Details (Opsional, tapi BAGUS untuk UX)
         // User bisa lihat detail barang apa saja yang dibayar di halaman Midtrans.
-        $itemDetails = $order->items->map(function ($item) {
+        $itemDetails = $order->items->map(function ($item) {    
             return [
                 'id'       => (string) $item->product_id,
-                'price'    => (int) $item->price, // Harga per item (Harus Integer)
+                'price'    => (int) round($item->price), // Harga per item (Harus Integer)
                 'quantity' => (int) $item->quantity,
                 'name'     => substr($item->product_name, 0, 50), // Batasi nama maks 50 char
             ];
@@ -81,7 +81,7 @@ class MidtransService
         if ($order->shipping_cost > 0) {
             $itemDetails[] = [
                 'id'       => 'SHIPPING',
-                'price'    => (int) $order->shipping_cost,
+                'price'    => (int) round($order->shipping_cost),
                 'quantity' => 1,
                 'name'     => 'Biaya Pengiriman',
             ];
@@ -95,6 +95,19 @@ class MidtransService
         ];
 
         // 5. Request Snap Token ke Server Midtrans
+        $calculatedTotal = 0;
+
+foreach ($itemDetails as $item) {
+    $calculatedTotal += $item['price'] * $item['quantity'];
+}
+
+if ($calculatedTotal !== (int) round($order->total_amount)) {
+    throw new \Exception(
+        "Total item ($calculatedTotal) tidak sama dengan gross_amount (" .
+        (int) round($order->total_amount) . ")"
+    );
+}
+
         try {
             $snapToken = Snap::getSnapToken($params);
             return $snapToken;

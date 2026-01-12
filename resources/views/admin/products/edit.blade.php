@@ -40,7 +40,7 @@
                             <label class="form-label fw-bold small text-muted text-uppercase">Nama Produk</label>
                             <input type="text" name="name"
                                 class="form-control form-control-lg bg-light border-0 rounded-3 @error('name') is-invalid @enderror"
-                                value="{{ old('name', $product->name) }}" placeholder="Contoh: Sneakers Pro 2026">
+                                value="{{ old('name', $product->name) }}" placeholder="Contoh: Coffee Arabica">
                             @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

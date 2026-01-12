@@ -231,7 +231,7 @@
 <div class="panel-premium mt-4 shadow-sm" data-aos="fade-up">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h5 class="fw-bold mb-0">Best Selling Products</h5>
-        <button class="btn btn-outline-primary btn-action-sm border-2">Export CSV</button>
+        {{-- <button class="btn btn-outline-primary btn-action-sm border-2">Export CSV</button> --}}
     </div>
 
     <div class="row g-3">
